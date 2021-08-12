@@ -25,19 +25,9 @@ class BatchFetchSpider(scrapy.Spider):
             'from': date_today,
             'until': date_today
         }
-        self.logger.info('11111111111')
         yield scrapy.Request(
             url=self.arxiv_url, method='POST', body=urlencode(body), headers=self.headers, callback=self.parse
             )
-        while self.resumptionToken:
-            self.logger.info('22222222222')
-            body = {
-                'verb': 'ListRecords',
-                'resumptionToken': self.resumptionToken
-            }
-            yield scrapy.Request(
-                url=self.arxiv_url, method='POST', body=urlencode(body), headers=self.headers, callback=self.parse
-                )
 
     def parse(self, response):
         root: xml.dom.minidom.Element = xml.dom.minidom.parseString(response.body)
@@ -54,9 +44,15 @@ class BatchFetchSpider(scrapy.Spider):
         if (len(list_elem_resumptionToken) > 0):
             elem_resumptionToken: xml.dom.minidom.Element = list_elem_resumptionToken[0]
             self.resumptionToken = self.getText(elem_resumptionToken.childNodes)
-        else:
-            self.resumptionToken = ''
-        self.logger.info(f'fetch finish, record_count={self.record_count}')
+            if self.resumptionToken:
+                body = {
+                    'verb': 'ListRecords',
+                    'resumptionToken': self.resumptionToken
+                }
+                yield scrapy.Request(
+                    url=self.arxiv_url, method='POST', body=urlencode(body), headers=self.headers, callback=self.parse
+                    )
+        self.logger.info(f'fetch finish, record_count={self.record_count} self.resumptionToken={self.resumptionToken}')
 
     def getText(self, nodelist) -> str:
         rc = []

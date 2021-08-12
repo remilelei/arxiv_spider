@@ -19,6 +19,8 @@ NEWSPIDER_MODULE = 'arxiv_spider.spiders'
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
 
+LOG_FILE='log/out.log'
+
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
 
