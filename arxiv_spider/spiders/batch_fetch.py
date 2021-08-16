@@ -2,6 +2,8 @@ from urllib.parse import urlencode
 import scrapy
 import datetime
 import xml.dom.minidom
+import arxiv_spider.items
+from arxiv_spider.items import ArxivSpiderItem
 
 class BatchFetchSpider(scrapy.Spider):
     name = 'batch_fetch'
@@ -38,8 +40,19 @@ class BatchFetchSpider(scrapy.Spider):
                 continue
             title: xml.dom.minidom.Element = title[0]
             str_title =  self.getText(title.childNodes)
-            self.logger.info(f'get title: { str_title }')
+            
+            id_ = record.getElementsByTagName('id')
+            if len(id_) <= 0:
+                continue
+            id_: xml.dom.minidom.Element = id_[0]
+            str_id =  self.getText(id_.childNodes)
+            
             self.record_count = self.record_count + 1
+            item = ArxivSpiderItem({
+                'title': str_title,
+                'id': str_id
+            })
+            yield item
         list_elem_resumptionToken:list[xml.dom.minidom.Element] = root.getElementsByTagName('resumptionToken')
         if (len(list_elem_resumptionToken) > 0):
             elem_resumptionToken: xml.dom.minidom.Element = list_elem_resumptionToken[0]
