@@ -1,3 +1,0 @@
-2021-08-24 11:41:00 [scrapy.utils.log] INFO: Scrapy 2.5.0 started (bot: arxiv_spider)
-2021-08-24 11:41:00 [scrapy.utils.log] INFO: Versions: lxml 4.6.3.0, libxml2 2.9.10, cssselect 1.1.0, parsel 1.6.0, w3lib 1.22.0, Twisted 21.7.0, Python 3.6.8 (default, Nov 16 2020, 16:55:22) - [GCC 4.8.5 20150623 (Red Hat 4.8.5-44)], pyOpenSSL 20.0.1 (OpenSSL 1.1.1k  25 Mar 2021), cryptography 3.4.7, Platform Linux-3.10.0-1160.el7.x86_64-x86_64-with-centos-7.9.2009-Core
-2021-08-24 11:41:00 [scrapy.utils.log] DEBUG: Using reactor: twisted.internet.epollreactor.EPollReactor
